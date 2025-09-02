@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}REPORTS - MILITARY PASSWORD SECURITY ANALYZER{% endblock %}
+
+{% block content %}
+<div class="reports-container">
+    <div class="reports-header">
+        <h1>SECURITY REPORTS</h1>
+        <div class="reports-controls">
+            <button class="report-btn active">DAILY</button>
+            <button class="report-btn">WEEKLY</button>
+            <button class="report-btn">MONTHLY</button>
+        </div>
+    </div>
+    
+    <div class="reports-grid">
+        <div class="report-card">
+            <div class="report-header">
+                <h3>THREAT STATISTICS</h3>
+                <div class="report-status">UPDATED</div>
+            </div>
+            <div class="report-content">
+                <div class="stat-item">
+                    <div class="stat-label">TOTAL ANALYSES</div>
+                    <div class="stat-value">1,247</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">COMPROMISED</div>
+                    <div class="stat-value critical">342</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">SECURE</div>
+                    <div class="stat-value secure">905</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="report-card">
+            <div class="report-header">
+                <h3>RISK DISTRIBUTION</h3>
+                <div class="report-status">CURRENT</div>
+            </div>
+            <div class="report-content">
+                <div class="risk-distribution">
+                    <div class="risk-bar">
+                        <div class="risk-label">CRITICAL</div>
+                        <div class="risk-meter critical">
+                            <div class="risk-fill" style="width: 27%"></div>
+                        </div>
+                        <div class="risk-percent">27%</div>
+                    </div>
+                    <div class="risk-bar">
+                        <div class="risk-label">HIGH</div>
+                        <div class="risk-meter high">
+                            <div class="risk-fill" style="width: 18%"></div>
+                        </div>
+                        <div class="risk-percent">18%</div>
+                    </div>
+                    <div class="risk-bar">
+                        <div class="risk-label">MEDIUM</div>
+                        <div class="risk-meter medium">
+                            <div class="risk-fill" style="width: 23%"></div>
+                        </div>
+                        <div class="risk-percent">23%</div>
+                    </div>
+                    <div class="risk-bar">
+                        <div class="risk-label">LOW</div>
+                        <div class="risk-meter low">
+                            <div class="risk-fill" style="width: 32%"></div>
+                        </div>
+                        <div class="risk-percent">32%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="report-card full-width">
+            <div class="report-header">
+                <h3>SECURITY TRENDS</h3>
+                <div class="report-status">30-DAY ANALYSIS</div>
+            </div>
+            <div class="report-content">
+                <div class="trend-chart">
+                    <div class="chart-placeholder">ADVANCED ANALYTICS CHART</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

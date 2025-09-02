@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="landing-container">
+    <div class="landing-header">
+        <h1 class="landing-title">MILITARY-GRADE PASSWORD SECURITY</h1>
+        <p class="landing-subtitle">ADVANCED THREAT DETECTION AND ANALYSIS</p>
+    </div>
+    
+    <div class="analysis-card">
+        <div class="card-header">
+            <h2>SECURITY ASSESSMENT</h2>
+            <div class="header-status">SYSTEM READY</div>
+        </div>
+        
+        <form id="passwordForm" class="analysis-form" method="POST" action="{{ url_for('analyze_password') }}">
+            <div class="form-group">
+                <label for="password" class="form-label">ENTER CREDENTIALS FOR ANALYSIS</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="CLASSIFIED_PASSWORD" required>
+                <div class="password-controls">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+                        <span class="checkmark"></span>
+                        DISPLAY CREDENTIALS
+                    </label>
+                    <button type="button" class="generate-btn" onclick="generateSecurePassword()">GENERATE SECURE</button>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">
+                    <span class="btn-text">INITIATE ANALYSIS</span>
+                    <span class="btn-icon">▶</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>ADVANCED CRYPTOGRAPHY</h3>
+            <p>ENTROPY ANALYSIS AND PATTERN DETECTION</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📡</div>
+            <h3>THREAT INTELLIGENCE</h3>
+            <p>REAL-TIME BREACH DATABASE INTEGRATION</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>PRIVACY PROTECTION</h3>
+            <p>K-ANONYMITY PROTOCOL IMPLEMENTATION</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const showPassword = document.getElementById('showPassword');
+        passwordInput.type = showPassword.checked ? 'text' : 'password';
+    }
+    
+    function generateSecurePassword() {
+        fetch('/api/generate-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({length: 16})
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('password').value = data.password;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    
+    document.getElementById('passwordForm').addEventListener('submit', function() {
+        const button = this.querySelector('.submit-btn');
+        button.innerHTML = '<span class="btn-text">ANALYZING...</span>';
+        button.disabled = true;
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}DASHBOARD - MILITARY PASSWORD SECURITY ANALYZER{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>SECURITY DASHBOARD</h1>
+        <div class="dashboard-status">OPERATIONAL</div>
+    </div>
+    
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <div class="card-title">SYSTEM STATUS</div>
+            <div class="card-content">
+                <div class="status-indicator active"></div>
+                <div class="status-text">ACTIVE</div>
+            </div>
+        </div>
+        
+        <div class="dashboard-card">
+            <div class="card-title">THREAT LEVEL</div>
+            <div class="card-content">
+                <div class="threat-level low">LOW</div>
+            </div>
+        </div>
+        
+        <div class="dashboard-card">
+            <div class="card-title">ANALYSIS COUNT</div>
+            <div class="card-content">
+                <div class="count-number">0</div>
+            </div>
+        </div>
+        
+        <div class="dashboard-card">
+            <div class="card-title">LAST UPDATE</div>
+            <div class="card-content">
+                <div class="update-time" id="currentTime">--:--:--</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="intelligence-section">
+        <h2>SECURITY INTELLIGENCE</h2>
+        <div class="intelligence-grid" id="intelligenceData">
+            <div class="loading">RETRIEVING INTELLIGENCE...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateTime() {
+        const now = new Date();
+        const timeString = now.toTimeString().split(' ')[0];
+        document.getElementById('currentTime').textContent = timeString;
+    }
+    
+    function loadSecurityIntelligence() {
+        fetch('/api/security-intelligence')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('intelligenceData');
+            container.innerHTML = '';
+            
+            for (const [key, value] of Object.entries(data)) {
+                const item = document.createElement('div');
+                item.className = 'intelligence-item';
+                item.innerHTML = `
+                    <div class="intelligence-key">${key.replace('_', ' ').toUpperCase()}</div>
+                    <div class="intelligence-value">${value}</div>
+                `;
+                container.appendChild(item);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading intelligence:', error);
+        });
+    }
+    
+    updateTime();
+    setInterval(updateTime, 1000);
+    loadSecurityIntelligence();
+    setInterval(loadSecurityIntelligence, 30000);
+</script>
+{% endblock %}

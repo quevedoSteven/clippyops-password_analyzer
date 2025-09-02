@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MILITARY PASSWORD SECURITY ANALYZER{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/military.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="military-overlay"></div>
+    <header class="military-header">
+        <div class="header-container">
+            <div class="header-logo">
+                <span class="logo-symbol">◉</span>
+                <span class="logo-text">MILITARY SECURITY</span>
+            </div>
+            <nav class="header-nav">
+                <a href="{{ url_for('index') }}" class="nav-link">ANALYZER</a>
+                <a href="{{ url_for('dashboard') }}" class="nav-link">DASHBOARD</a>
+                <a href="{{ url_for('reports') }}" class="nav-link">REPORTS</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="military-main">
+        <div class="main-container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    
+    <footer class="military-footer">
+        <div class="footer-container">
+            <div class="footer-classification">CLASSIFIED // FOR AUTHORIZED PERSONNEL ONLY</div>
+            <div class="footer-info">MILITARY PASSWORD SECURITY ANALYZER v2.0</div>
+        </div>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/military.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}ANALYSIS RESULTS - MILITARY PASSWORD SECURITY ANALYZER{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <div class="results-header">
+        <h1>SECURITY ANALYSIS REPORT</h1>
+        <a href="{{ url_for('index') }}" class="back-btn">NEW ANALYSIS</a>
+    </div>
+    
+    {% if error %}
+    <div class="error-alert">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-content">
+            <h3>ANALYSIS ERROR</h3>
+            <p>{{ error }}</p>
+        </div>
+    </div>
+    {% else %}
+    
+    <div class="analysis-grid">
+        <div class="result-card classification-card">
+            <div class="card-header">
+                <h2>CLASSIFICATION LEVEL</h2>
+                <div class="classification-badge {{ analysis.strength_level.lower() }}">
+                    {{ analysis.strength_level }}
+                </div>
+            </div>
+            <div class="classification-meter">
+                <div class="meter-fill {% if analysis.score >= 90 %}classified{% elif analysis.score >= 75 %}restricted{% elif analysis.score >= 60 %}confidential{% elif analysis.score >= 40 %}unclassified{% elif analysis.score >= 20 %}compromised{% else %}critical{% endif %}">
+                </div>
+            </div>
+            <div class="score-display">
+                <span class="score-value">{{ analysis.score }}</span>
+                <span class="score-max">/100</span>
+            </div>
+        </div>
+        
+        <div class="result-card threat-card">
+            <div class="card-header">
+                <h2>THREAT ASSESSMENT</h2>
+                <div class="risk-badge {% if breach.risk_assessment and breach.risk_assessment.level == 'CRITICAL' %}critical{% elif breach.risk_assessment and breach.risk_assessment.level == 'HIGH' %}high{% elif breach.risk_assessment and breach.risk_assessment.level == 'MEDIUM' %}medium{% elif breach.risk_assessment and breach.risk_assessment.level == 'LOW' %}low{% else %}none{% endif %}">
+                    {{ breach.risk_assessment.level if breach.risk_assessment else 'UNKNOWN' }}
+                </div>
+            </div>
+            <div class="threat-content">
+                {% if breach.breached %}
+                <div class="breach-count">EXPOSURES: {{ breach.count }}</div>
+                <div class="breach-description">{{ breach.risk_assessment.description if breach.risk_assessment else 'COMPROMISED' }}</div>
+                {% else %}
+                <div class="breach-status">NO BREACHES DETECTED</div>
+                <div class="breach-description">CREDENTIALS APPEAR SECURE</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="detailed-results">
+        <div class="result-section">
+            <h3>TECHNICAL METRICS</h3>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-label">ENTROPY</div>
+                    <div class="metric-value">{{ analysis.entropy }} bits</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">LENGTH</div>
+                    <div class="metric-value">{{ analysis.length }} chars</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">COMPLEXITY</div>
+                    <div class="metric-value">{{ analysis.character_sets.lowercase + analysis.character_sets.uppercase + analysis.character_sets.digits + analysis.character_sets.special }}</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">ANALYSIS TIME</div>
+                    <div class="metric-value">{{ analysis.analysis_time }}s</div>
+                </div>
+            </div>
+        </div>
+        
+        {% if analysis.patterns %}
+        <div class="result-section">
+            <h3>DETECTED PATTERNS</h3>
+            <div class="patterns-list">
+                {% for pattern in analysis.patterns %}
+                <div class="pattern-item">
+                    <span class="pattern-icon">⚠️</span>
+                    <span class="pattern-text">{{ pattern.replace('_', ' ').title() }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="result-section">
+            <h3>SECURITY RECOMMENDATIONS</h3>
+            <div class="recommendations-list">
+                {% for recommendation in analysis.recommendations %}
+                <div class="recommendation-item">
+                    <span class="rec-icon">💡</span>
+                    <span class="rec-text">{{ recommendation }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
